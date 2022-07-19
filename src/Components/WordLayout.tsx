@@ -2,13 +2,13 @@ import React, { useContext, useEffect } from 'react'
 import { Word } from './Word'
 import styled from "styled-components";
 import { useWord } from '../wordContext';
-import { Alert } from '@mui/material';
+import '../App.css';
 
 const Layout = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+  flex-grow: -1;
   text-align: center;
   background-color: #000000;  
 `;
@@ -19,6 +19,8 @@ const WordContainer = styled.div`
   grid-gap: 5px;
   height: 420px;
   width: 350px;
+  display: flex;
+justify-content:center; // centers in the flex direction and the default flex-direction is row
 `;
 const TileRow = styled.div`
   width: 100%;
@@ -40,7 +42,7 @@ const Tile = styled.div`
 `;
 
 export const WordLayout = () => {
-  const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground]=useWord();
+  const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus]=useWord();
   console.log("words: ",words);
   console.log("wordIndex: ",wordIndex);
   const maxCol=wordIndex%5
@@ -49,7 +51,7 @@ export const WordLayout = () => {
 
   return (
     <div>
-      <div className="flex justify-center mb-1">
+      <div className="App">
       <p>{wordIndex}</p>
         <Layout>
           <WordContainer>
@@ -64,7 +66,6 @@ export const WordLayout = () => {
         </Layout>
         
       </div>
-      <Alert severity="success">This is a success alert — check it out!</Alert>
 
     </div>
   )

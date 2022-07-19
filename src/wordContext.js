@@ -14,19 +14,22 @@ export function WordProvider({ children }) {
 
     var [wordInputs,setWordInputs]=useState([['','','','',''],['','','','',''],['','','','',''],['','','','',''],['','','','','']]);
     var [wordBackground,setWordBackground]=useState([['','','','',''],['','','','',''],['','','','',''],['','','','',''],['','','','','']]);
+    var [gameStatus,setGameStatus]=useState("IN_PROGRESS");
+    
     const correctWord="LIVES"
+    
     var [wordIndex,setWordIndex]= useState(0);
-    console.log("1 wordBackground: ",wordBackground);
     useEffect(() => {
+
     },[])
 
 
     function appendLetter(letter)
     {
+    
+
     setWordIndex(prevCount => {
         let prevWordArray = [...wordInputs];
-        console.log("wordIndex context: ",wordIndex);
-        console.log("(prevCount/5)>>0]: ",(prevCount/5)>>0);
         prevWordArray[prevCount%5][(prevCount/5)>>0]=letter
         setWordInputs(prevWordArray);
 
@@ -40,13 +43,28 @@ export function WordProvider({ children }) {
         {
             prevBackgroundArray[prevCount%5][(prevCount/5)>>0]="orange"
         }
-        
+        const arrayColumn = (arr, n) => arr.map(x => x[n]);
+        const lastWordEntered=arrayColumn(prevWordArray, ((prevCount)/5)>>0).join('').toUpperCase()
         setWordBackground(prevBackgroundArray);
 
-
-        
+        if(lastWordEntered===correctWord.toUpperCase())
+        {
+            setGameStatus("WON");
+            console.log("game won");
+            return(prevCount + 20)
+        }
+        else if(lastWordEntered!=correctWord.toUpperCase() && lastWordEntered.length==5 && ((prevCount)/5)>>0==4)
+        {
+            setGameStatus("LOST");
+            console.log("game lost");
+            
+        }
+        if(gameStatus==="IN_PROGRESS")
+        {
         return(prevCount + 1)
+        }
     });
+    
     }
 
     function removeLetter(letter)
@@ -81,7 +99,7 @@ export function WordProvider({ children }) {
     
     
     return (
-        <WordContext.Provider value={[wordInputs,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground]}>
+        <WordContext.Provider value={[wordInputs,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus]}>
             {children}
         </WordContext.Provider>
     )
