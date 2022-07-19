@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { WordLayout } from './Components/WordLayout.tsx'
 import { WordProvider } from './wordContext';
-
+import { KeyboardLayout } from './Components/Keyboard.tsx'
 function App(){
   return (
     <div className="App">
@@ -10,7 +10,9 @@ function App(){
       <div>
       <WordProvider>
       <WordLayout></WordLayout>
+      <KeyboardLayout></KeyboardLayout>
       </WordProvider>
+      
     
       </div>
 

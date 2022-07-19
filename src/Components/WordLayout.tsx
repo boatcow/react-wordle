@@ -1,7 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Word } from './Word'
 import styled from "styled-components";
 import { useWord } from '../wordContext';
+import { Alert } from '@mui/material';
+
 const Layout = styled.section`
   display: flex;
   justify-content: center;
@@ -28,43 +30,33 @@ const Tile = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-
   border: 2px solid #3a3a3c;
   font-size: 3.2rem;
   font-weight: bold;
   line-height: 3.2rem;
   color: white;
   text-transform: uppercase;
+  background: ${props => (props.currRow < props.maxRow) && props.inputColor || ""};
 `;
 
-type Props = {
-  onChar: (value: string) => void
-  onDelete: () => void
-  onEnter: () => void
-  solution: string
-  guesses: string[]
-  isRevealing?: boolean
-}
-
-export const WordLayout = ({
-  onChar,
-  onDelete,
-  onEnter,
-  solution,
-  guesses,
-  isRevealing,
-}: Props) => {
-  console.log("useWord: ",useWord);
+export const WordLayout = () => {
+  const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground]=useWord();
+  console.log("words: ",words);
+  console.log("wordIndex: ",wordIndex);
+  const maxCol=wordIndex%5
+  const maxRow=(wordIndex/5)>>0
+  console.log("maxRow: ",maxRow);
 
   return (
     <div>
       <div className="flex justify-center mb-1">
+      <p>{wordIndex}</p>
         <Layout>
           <WordContainer>
           {[0, 1, 2, 3, 4].map((i) => (
             <TileRow key={i}>
               {[0, 1, 2, 3, 4].map((j) => (
-                <Tile key={j}>{i}{j}</Tile>
+                <Tile key={j} inputColor={wordBackground[i][j]} maxRow={maxRow} maxCol={maxCol} currRow={j} currColumn={i}>{words[i][j]}</Tile>
               ))}
             </TileRow>
           ))}
@@ -72,6 +64,8 @@ export const WordLayout = ({
         </Layout>
         
       </div>
+      <Alert severity="success">This is a success alert — check it out!</Alert>
+
     </div>
   )
 }
