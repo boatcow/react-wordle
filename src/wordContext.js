@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import { ThemeContext } from 'styled-components';
 // import {fs} from 'fs';
 import {wordBank} from './WordBank'
-import Papa from "papaparse";
 
 const WordContext = React.createContext();
 const UpdateWordContext = React.createContext();
