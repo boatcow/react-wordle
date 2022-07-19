@@ -23,7 +23,7 @@ function App(){
   return (
     <div className="App">
         <header className='header'>
-          <h1>Wordlee at home:</h1>
+          <h1>Wordle GRE</h1>
         </header>
       <div>
       <WordProvider>

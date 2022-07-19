@@ -21,7 +21,8 @@ const modal = {
   };
   
 export const GameModal = () => {
-  const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus]=useWord();
+  // const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus]=useWord();
+  const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus,correctWordLength,correctWordMeaning,correctWord]=useWord();
 
   if(gameStatus=="WON")
   { 
@@ -56,9 +57,13 @@ export const GameModal = () => {
     aria-describedby="modal-modal-description"
   >
     <Box sx={modal}>
-      <Typography id="modal-modal-title" variant="h6" component="h2" align="center">
+      <Typography id="modal-modal-title" variant="h6" component="h1" align="center">
         You Lost!!!
       </Typography>
+      <Typography id="modal-modal-title" variant="h6" component="h2" align="center">
+      Correct word: {correctWord}
+      </Typography>
+
       <div className="App">
       <img src= {lost} alt="loading..." />
 

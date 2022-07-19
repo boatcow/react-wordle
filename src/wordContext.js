@@ -1,5 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { ThemeContext } from 'styled-components';
+// import {fs} from 'fs';
+import {wordBank} from './WordBank'
+import Papa from "papaparse";
+
 const WordContext = React.createContext();
 const UpdateWordContext = React.createContext();
 
@@ -10,18 +14,35 @@ export function useSetWord() {
     return useContext(UpdateWordContext)
 }
 
+const fetchRandomWord = async() => {
+    const randomChoice=Math.floor(Math.random() * 100);
+    fetch(wordBank)
+    .then((response)=>response.text())
+    .then((result)=>{
+        console.log(result.split('\n'));
+    });
+    return
+}
 export function WordProvider({ children }) {
-
-    var [wordInputs,setWordInputs]=useState([['','','','',''],['','','','',''],['','','','',''],['','','','',''],['','','','','']]);
-    var [wordBackground,setWordBackground]=useState([['','','','',''],['','','','',''],['','','','',''],['','','','',''],['','','','','']]);
-    var [gameStatus,setGameStatus]=useState("IN_PROGRESS");
     
-    const correctWord="LIVES"
+    const randomChoice=Math.floor(Math.random() * 100);
+
+    var [wordInputs,setWordInputs]=useState(
+        [['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','','']]
+        );
+    var [wordBackground,setWordBackground]=useState(
+        [['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','',''],['','','','','','','','','','','','','','','','','','','','']]
+        );
+    var [gameStatus,setGameStatus]=useState("IN_PROGRESS");
+    var [correctWord,setCorrectWord]=useState(wordBank[randomChoice].split("-")[0].toUpperCase())
+    var [correctWordMeaning,setCorrectWordMeaning]=useState(wordBank[randomChoice].split("-")[1])
+    var [correctWordLength,setCorrectWord]=useState(wordBank[randomChoice].split("-")[0].length)
     
     var [wordIndex,setWordIndex]= useState(0);
-    useEffect(() => {
+    console.log("correctWord:",correctWord)
+    console.log("correctWordMeaning:",correctWordMeaning)
+    console.log("THE correctWordLength:",correctWordLength)
 
-    },[])
 
 
     function appendLetter(letter)
@@ -30,30 +51,30 @@ export function WordProvider({ children }) {
 
     setWordIndex(prevCount => {
         let prevWordArray = [...wordInputs];
-        prevWordArray[prevCount%5][(prevCount/5)>>0]=letter
+        prevWordArray[prevCount%correctWordLength][(prevCount/correctWordLength)>>0]=letter
         setWordInputs(prevWordArray);
 
         let prevBackgroundArray = [...wordBackground];
         
-        if(prevWordArray[prevCount%5][(prevCount/5)>>0].toUpperCase() == correctWord[prevCount%5].toUpperCase())
+        if(prevWordArray[prevCount%correctWordLength][(prevCount/correctWordLength)>>0].toUpperCase() == correctWord[prevCount%correctWordLength].toUpperCase())
         {
-            prevBackgroundArray[prevCount%5][(prevCount/5)>>0]="green"
+            prevBackgroundArray[prevCount%correctWordLength][(prevCount/correctWordLength)>>0]="green"
         }
         else if(correctWord.includes(letter.toUpperCase()))
         {
-            prevBackgroundArray[prevCount%5][(prevCount/5)>>0]="orange"
+            prevBackgroundArray[prevCount%correctWordLength][(prevCount/correctWordLength)>>0]="orange"
         }
         const arrayColumn = (arr, n) => arr.map(x => x[n]);
-        const lastWordEntered=arrayColumn(prevWordArray, ((prevCount)/5)>>0).join('').toUpperCase()
+        const lastWordEntered=arrayColumn(prevWordArray, ((prevCount)/correctWordLength)>>0).join('').toUpperCase()
         setWordBackground(prevBackgroundArray);
 
         if(lastWordEntered===correctWord.toUpperCase())
         {
             setGameStatus("WON");
             console.log("game won");
-            return(prevCount + 20)
+            return(prevCount + 100)
         }
-        else if(lastWordEntered!=correctWord.toUpperCase() && lastWordEntered.length==5 && ((prevCount)/5)>>0==4)
+        else if(lastWordEntered!=correctWord.toUpperCase() && prevCount==(correctWordLength*5-1))
         {
             setGameStatus("LOST");
             console.log("game lost");
@@ -71,16 +92,16 @@ export function WordProvider({ children }) {
     {
     setWordIndex(prevCount => {
         let prevArray = [...wordInputs];
-        if((prevCount)%5==0)
+        if((prevCount)%correctWordLength==0)
         {
             return(prevCount)
         }
-        prevArray[(prevCount-1)%5][((prevCount-1)/5)>>0]=''
+        prevArray[(prevCount-1)%correctWordLength][((prevCount-1)/correctWordLength)>>0]=''
         setWordInputs(prevArray);
 
         let prevBackgroundArray = [...wordBackground];
         
-        prevBackgroundArray[prevCount%5][(prevCount/5)>>0]=""
+        prevBackgroundArray[prevCount%correctWordLength][(prevCount/correctWordLength)>>0]=""
         
  
         return(prevCount-1)
@@ -91,7 +112,7 @@ export function WordProvider({ children }) {
     {
     setWordIndex(prevCount => {
         let prevArray = [...wordInputs];
-        prevArray[(prevCount-1)%5][((prevCount-1)/5)>>0]=''
+        prevArray[(prevCount-1)%correctWordLength][((prevCount-1)/correctWordLength)>>0]=''
         setWordInputs(prevArray);
         return(prevCount-1)
     });
@@ -99,7 +120,7 @@ export function WordProvider({ children }) {
     
     
     return (
-        <WordContext.Provider value={[wordInputs,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus]}>
+        <WordContext.Provider value={[wordInputs,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus,correctWordLength,correctWordMeaning,correctWord]}>
             {children}
         </WordContext.Provider>
     )

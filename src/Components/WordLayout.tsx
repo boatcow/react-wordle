@@ -42,22 +42,43 @@ const Tile = styled.div`
 `;
 
 export const WordLayout = () => {
-  const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus]=useWord();
+  const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus,correctWordLength,correctWordMeaning]=useWord();
   console.log("words: ",words);
-  console.log("wordIndex: ",wordIndex);
-  const maxCol=wordIndex%5
-  const maxRow=(wordIndex/5)>>0
+  console.log("wordBackground: ",wordBackground);
+  console.log("correctWordLength: ",correctWordLength);
+  const maxCol=wordIndex%correctWordLength
+  const maxRow=(wordIndex/correctWordLength)>>0
   console.log("maxRow: ",maxRow);
+  console.log("correctWordLength: ",correctWordLength,": ::",setWordBackground,gameStatus,correctWordMeaning)
+  const gridDefault=Array.from(Array(correctWordLength).keys())
+  console.log("Array.from(Array(correctWordLength).keys(): ",gridDefault)
+  console.log(words,wordIndex,wordBackground,gameStatus,correctWordLength,correctWordMeaning)
+  // console.log("---------------------------: ")
+
+  // console.log("words: ",words)
+
+  // for (let i = 0; i < correctWordLength; i++) {
+  //   for (let j = 0; j < 3; j++) {
+  //     console.log(i," , ",j)
+  //     console.log(words[i][j])
+  //   }
+
+  // }
+  // console.log("---------------------------: ")
 
   return (
     <div>
+      <header className='header'>
+          <h2  style={{ color: '#CD5C5C' }}>Word Meaning : {correctWordMeaning}</h2>
+      </header>
       <div className="App">
       <p>{wordIndex}</p>
         <Layout>
           <WordContainer>
-          {[0, 1, 2, 3, 4].map((i) => (
+          {(gridDefault).map((i) => (
             <TileRow key={i}>
-              {[0, 1, 2, 3, 4].map((j) => (
+              
+              {[0, 1, 2,3,4].map((j) => (
                 <Tile key={j} inputColor={wordBackground[i][j]} maxRow={maxRow} maxCol={maxCol} currRow={j} currColumn={i}>{words[i][j]}</Tile>
               ))}
             </TileRow>
