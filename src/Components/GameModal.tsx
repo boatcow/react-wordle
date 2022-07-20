@@ -19,6 +19,34 @@ const modal = {
     boxShadow: 24,
     p: 4,
   };
+function refreshPage(){ 
+    window.location.reload(); 
+}
+const ReloadButton = styled.button`
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0 6px 0 0;
+  height: 30px;
+  flex: 1;
+  display: inline-flex;
+  justify-content: center;
+  border: 0;
+  border-radius: 4px;
+  background-color: #008000;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #d7dadc;
+  position: absolute;
+  top: 90%;
+  left: 90%
+  -ms-transform: translateY(-10%);
+  transform: translateY(-10%);
+
+  -ms-transform: translateX(10%);
+  transform: translateX(90%);
+  }
+`;
   
 export const GameModal = () => {
   // const [words,setWordInputs,wordIndex,setWordIndex,appendLetter,removeLetter,wordBackground,setWordBackground,gameStatus]=useWord();
@@ -44,6 +72,8 @@ export const GameModal = () => {
       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
         
       </Typography>
+      <ReloadButton type="button" onClick={ refreshPage }> <span>Try another word</span> </ReloadButton> 
+
     </Box>
   </Modal>
   )
@@ -72,6 +102,8 @@ export const GameModal = () => {
       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
         
       </Typography>
+      <ReloadButton type="button" onClick={ refreshPage }> <span>Try another word</span> </ReloadButton> 
+
     </Box>
   </Modal>
   
