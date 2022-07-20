@@ -38,9 +38,6 @@ export function WordProvider({ children }) {
     var [correctWordLength,setCorrectWord]=useState(wordBank[randomChoice].split("-")[0].length)
     
     var [wordIndex,setWordIndex]= useState(0);
-    console.log("correctWord:",correctWord)
-    console.log("correctWordMeaning:",correctWordMeaning)
-    console.log("THE correctWordLength:",correctWordLength)
 
 
 
